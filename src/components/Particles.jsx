@@ -17,10 +17,10 @@ export default function ParticlesBackground() {
     () => ({
       background: {
         color: {
-          value: "#000000",
+          value: "#fdfbf7",
         },
       },
-      fpsLimit: 120,
+      fpsLimit: 60,
       interactivity: {
         events: {
           onClick: {
@@ -34,52 +34,62 @@ export default function ParticlesBackground() {
         },
         modes: {
           push: {
-            quantity: 4,
+            quantity: 12,
           },
           repulse: {
-            distance: 100,
-            duration: 0.4,
+            distance: 135,
+            duration: 2.2,
+            speed: 0.5,
+            factor: 60,
           },
         },
       },
       particles: {
         color: {
-          value: "#ffffff",
+          value: "#111111",
         },
         links: {
-          color: "#ffffff",
-          distance: 150,
-          enable: true,
-          opacity: 0.2,
-          width: 1,
+          enable: false,
         },
         move: {
-          direction: "none",
+          direction: "top",
           enable: true,
           outModes: {
             default: "bounce",
           },
-          random: false,
-          speed: 1,
+          random: true,
+          speed: { min: 0.04, max: 0.18 },
           straight: false,
+          drift: 0.2,
         },
         number: {
           density: {
             enable: true,
+            area: 1400,
           },
-          value: 80,
+          value: 5040,
         },
         opacity: {
-          value: 0.3,
+          value: { min: 0.03, max: 0.135 },
+          animation: {
+            enable: true,
+            speed: 0.5,
+            sync: false,
+          },
         },
         shape: {
           type: "circle",
         },
         size: {
-          value: { min: 1, max: 3 },
+          value: { min: 0.4, max: 2.2 },
+          animation: {
+            enable: true,
+            speed: 1.2,
+            sync: false,
+          },
         },
       },
-      detectRetina: true,
+      detectRetina: false,
     }),
     [],
   );
@@ -96,6 +106,9 @@ export default function ParticlesBackground() {
           width: "100%",
           height: "100%",
           zIndex: -1,
+          filter: "blur(10px) contrast(0.9)",
+          opacity: 0.78,
+          backgroundColor: "rgba(255, 255, 255, 0.08)",
         }}
       />
     );

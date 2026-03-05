@@ -16,6 +16,9 @@ export default function CustomCursor() {
 
     const interactiveElements = document.querySelectorAll('a, button, .hoverable');
     interactiveElements.forEach(el => {
+      if (el.hasAttribute('data-cursor-static')) {
+        return;
+      }
       el.addEventListener('mouseenter', handleMouseEnter);
       el.addEventListener('mouseleave', handleMouseLeave);
     });
@@ -23,6 +26,9 @@ export default function CustomCursor() {
     return () => {
       window.removeEventListener('mousemove', updatePosition);
       interactiveElements.forEach(el => {
+        if (el.hasAttribute('data-cursor-static')) {
+          return;
+        }
         el.removeEventListener('mouseenter', handleMouseEnter);
         el.removeEventListener('mouseleave', handleMouseLeave);
       });

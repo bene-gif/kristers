@@ -1,4 +1,4 @@
-# KRSTER - Edgy Black & White Portfolio
+# KRISTERS DZENIS - Edgy Black & White Portfolio
 
 A custom-built portfolio website with an edgy, minimalist black & white aesthetic featuring interactive elements and unique UI effects.
 
@@ -35,8 +35,8 @@ A custom-built portfolio website with an edgy, minimalist black & white aestheti
 
 ```bash
 # Clone the repository
-git clone https://github.com/Aeron-bot/krster-portfolio.git
-cd krster-portfolio
+git clone https://github.com/Aeron-bot/kristersdzenis-portfolio.git
+cd kristersdzenis-portfolio
 
 # Install dependencies
 npm install
@@ -61,7 +61,7 @@ The project runs on **Vite** for fast HMR and optimal build performance.
 ## 📁 Project Structure
 
 ```
-krster-portfolio/
+kristersdzenis-portfolio/
 ├── src/
 │   ├── components/
 │   │   ├── CustomCursor.jsx    # Magnetic cursor effect
@@ -90,7 +90,7 @@ Magnetic cursor that follows mouse movement and enlarges on hover over interacti
 Hero section with animated glitch effect on the title using pure CSS animations.
 
 ### Particles
-Interactive particle background using tsparticles with hover repulse and click push effects.
+Interactive particle background using tsparticles with hover repulse and click push effects, softened with a subtle blur to echo the reference’s texture.
 
 ### Timeline
 Interactive timeline with hover-to-reveal artwork functionality. Displays project chronologically with smooth animations.
@@ -141,7 +141,7 @@ MIT License - feel free to use this for your own portfolio!
 
 ## 👤 Author
 
-Built with 🖤 by Aeron for Krster
+Built with 🖤 by Aeron for Kristers Dzenis
 
 ## 🙏 Credits
 
