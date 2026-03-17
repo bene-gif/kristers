@@ -49,15 +49,6 @@ const getModuloSource = (sources, index) => {
   return sources[index % sources.length];
 };
 
-const galleryItems = Array.from({ length: 15 }, (_, index) => ({
-  title: `still-${String(index + 1).padStart(2, '0')}`,
-  meta: 'image material',
-  description: 'Still image preview. Replace or reorder files in src/assets/media/images.',
-  accent: stillAccents[index % stillAccents.length],
-  image: getModuloSource(imageSources, index),
-  previewImage: getModuloSource(imagePreviewSources, index) ?? getModuloSource(imageSources, index),
-}));
-
 const videoAccents = ['gallery-card--mist', 'gallery-card--shadow', 'gallery-card--forest', 'gallery-card--ember', 'gallery-card--warm'];
 
 const getVideoMimeType = (source) => {
@@ -83,7 +74,6 @@ const videoItems = videoSources.map((video, index) => ({
 }));
 
 function ProjectList() {
-  const [activeIndex, setActiveIndex] = useState(2);
   const [activeVideoIndex, setActiveVideoIndex] = useState(0);
   const [windowAudioVideoIndex, setWindowAudioVideoIndex] = useState(null);
   const [motionWindow, setMotionWindow] = useState(null);
@@ -700,7 +690,6 @@ function ProjectList() {
       ) : (
         <>
           {renderFinderWindow(videoItems, activeVideoIndex, setActiveVideoIndex, 'video material', 'video')}
-          {renderFinderWindow(galleryItems, activeIndex, setActiveIndex, 'image material', 'image')}
 
           <section className="work-groups">
             <div className="work-group work-group--counter">
