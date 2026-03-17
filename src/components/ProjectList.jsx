@@ -268,9 +268,6 @@ function ProjectList() {
       if (activeWindow === 'video') {
         event.preventDefault();
         openPreview(videoItems, activeVideoIndex, 'video');
-      } else if (activeWindow === 'image') {
-        event.preventDefault();
-        openPreview(galleryItems, activeIndex, 'image');
       }
     };
 
@@ -278,7 +275,7 @@ function ProjectList() {
     return () => {
       window.removeEventListener('keydown', handleGlobalSpace, { capture: true });
     };
-  }, [activeIndex, activeVideoIndex, activeWindow, previewItem]);
+  }, [activeVideoIndex, activeWindow, previewItem]);
 
   useEffect(() => {
     const preloadTargets = videoItems
@@ -338,17 +335,6 @@ function ProjectList() {
   useEffect(() => {
     setWindowAudioVideoIndex(null);
   }, [activeVideoIndex, activePage, previewItem]);
-
-  useEffect(() => {
-    setMotionWindow('image');
-    const timerId = window.setTimeout(() => {
-      setMotionWindow((current) => (current === 'image' ? null : current));
-    }, 180);
-
-    return () => {
-      window.clearTimeout(timerId);
-    };
-  }, [activeIndex]);
 
   useEffect(() => {
     setMotionWindow('video');
