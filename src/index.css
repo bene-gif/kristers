@@ -32,7 +32,7 @@ body {
   background-color: var(--white);
   color: var(--black);
   overflow-x: hidden;
-  cursor: url('/cursor.svg') 12 12, auto;
+  cursor: auto;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -206,5 +206,5 @@ p {
 a {
   color: var(--black);
   text-decoration: none;
-  cursor: url('/cursor-hover.svg') 12 12, pointer;
+  cursor: pointer;
 }
