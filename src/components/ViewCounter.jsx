@@ -19,20 +19,19 @@ function ViewCounter() {
       const pageTitle = document.title;
       const referrer = document.referrer;
 
-      if (shouldIncrement) {
-        fetch('/api/visit-log', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            domain,
-            timezone,
-            pagePath,
-            pageTitle,
-            referrer,
-          }),
-          keepalive: true,
-        }).catch(() => {});
-      }
+      fetch('/api/visit-log', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          domain,
+          timezone,
+          pagePath,
+          pageTitle,
+          referrer,
+          visitKind: shouldIncrement ? 'first-browser-visit' : 'repeat-browser-visit',
+        }),
+        keepalive: true,
+      }).catch(() => {});
 
       try {
         const response = shouldIncrement
