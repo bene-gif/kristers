@@ -115,6 +115,10 @@ await log(`Watching ${repoRoot}`);
 
 watch(repoRoot, { recursive: true }, (eventType, filename) => {
   const relativePath = typeof filename === 'string' ? filename : '';
+  if (shouldIgnore(relativePath)) {
+    return;
+  }
+
   void log(`Detected ${eventType} in ${relativePath || '(unknown path)'}`);
   scheduleSync(relativePath);
 });
