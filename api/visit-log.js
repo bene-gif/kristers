@@ -38,7 +38,8 @@ export async function POST(request) {
       configured: true,
       logged: true,
     }, 201);
-  } catch {
+  } catch (error) {
+    console.error('visit-log failed', error);
     return json({ error: 'Failed to log visit metadata.' }, 500);
   }
 }
