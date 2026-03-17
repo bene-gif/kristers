@@ -41,6 +41,100 @@ body {
   min-height: 100vh;
 }
 
+.app-shell {
+  transition: opacity 900ms ease, filter 900ms ease;
+}
+
+.app-shell--hidden {
+  opacity: 0;
+  filter: blur(16px);
+}
+
+.app-shell--ready {
+  opacity: 1;
+  filter: blur(0);
+}
+
+/* Intro Overlay */
+.intro-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 40000;
+  display: grid;
+  place-items: center;
+  background:
+    linear-gradient(180deg, rgba(239, 238, 235, 0.98), rgba(244, 242, 238, 0.995));
+  animation: intro-overlay-fade 2.2s ease forwards;
+  pointer-events: none;
+}
+
+.intro-overlay__grain {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.85), transparent 28%),
+    radial-gradient(circle at 80% 26%, rgba(0, 0, 0, 0.04), transparent 24%),
+    radial-gradient(circle at 50% 80%, rgba(255, 255, 255, 0.68), transparent 30%);
+  opacity: 0.72;
+}
+
+.intro-overlay__hello {
+  position: relative;
+  z-index: 1;
+  color: rgba(34, 34, 34, 0.72);
+  font-family: 'Snell Roundhand', 'Apple Chancery', 'Brush Script MT', cursive;
+  font-style: normal;
+  font-size: clamp(4.5rem, 12vw, 10rem);
+  line-height: 0.9;
+  letter-spacing: -0.06em;
+  text-shadow:
+    0 0 1px rgba(20, 20, 20, 0.2),
+    0 0 14px rgba(17, 17, 17, 0.12);
+  filter: blur(0.35px);
+  transform: translateY(1.5vh) scale(0.96);
+  animation: intro-hello-drift 2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes intro-overlay-fade {
+  0% {
+    opacity: 1;
+  }
+
+  62% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes intro-hello-drift {
+  0% {
+    opacity: 0;
+    transform: translateY(3vh) scale(0.88);
+    filter: blur(5px);
+  }
+
+  24% {
+    opacity: 1;
+    transform: translateY(1.2vh) scale(0.98);
+    filter: blur(1px);
+  }
+
+  68% {
+    opacity: 0.92;
+    transform: translateY(0) scale(1);
+    filter: blur(0.3px);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-1.5vh) scale(1.02);
+    filter: blur(7px);
+  }
+}
+
 /* Custom Cursor */
 .custom-cursor {
   --cursor-size: 24px;
@@ -142,6 +236,20 @@ body {
   a,
   button {
     cursor: pointer;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-shell {
+    transition: none;
+  }
+
+  .intro-overlay {
+    animation-duration: 0.9s;
+  }
+
+  .intro-overlay__hello {
+    animation-duration: 0.9s;
   }
 }
 
