@@ -6,11 +6,6 @@ const imageModules = import.meta.glob('../assets/media/images/*.{png,jpg,jpeg,we
   import: 'default',
 });
 
-const imagePreviewModules = import.meta.glob('../assets/media/images-preview/*.{png,jpg,jpeg,webp,avif}', {
-  eager: true,
-  import: 'default',
-});
-
 const videoModules = import.meta.glob('../assets/media/videos-web/*.{mp4,webm,m4v}', {
   eager: true,
   import: 'default',
@@ -21,14 +16,6 @@ const videoPreviewModules = import.meta.glob('../assets/media/videos-preview/*.{
   import: 'default',
 });
 
-const imageSources = Object.entries(imageModules)
-  .sort(([left], [right]) => left.localeCompare(right, undefined, { numeric: true }))
-  .map(([, source]) => source);
-
-const imagePreviewSources = Object.entries(imagePreviewModules)
-  .sort(([left], [right]) => left.localeCompare(right, undefined, { numeric: true }))
-  .map(([, source]) => source);
-
 const videoSources = Object.entries(videoModules)
   .sort(([left], [right]) => left.localeCompare(right, undefined, { numeric: true }))
   .map(([, source]) => source);
@@ -38,16 +25,6 @@ const videoPreviewSources = Object.entries(videoPreviewModules)
   .map(([, source]) => source);
 
 const aboutImage = imageModules['../assets/media/images/aboutme.jpeg'];
-
-const stillAccents = ['gallery-card--warm', 'gallery-card--forest', 'gallery-card--ember', 'gallery-card--mist', 'gallery-card--shadow'];
-
-const getModuloSource = (sources, index) => {
-  if (!sources.length) {
-    return undefined;
-  }
-
-  return sources[index % sources.length];
-};
 
 const videoAccents = ['gallery-card--mist', 'gallery-card--shadow', 'gallery-card--forest', 'gallery-card--ember', 'gallery-card--warm'];
 
