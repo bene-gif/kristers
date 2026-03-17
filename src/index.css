@@ -138,8 +138,9 @@ body {
 /* Custom Cursor */
 .custom-cursor {
   --cursor-size: 24px;
-  width: 20px;
-  height: 20px;
+  --cursor-scale: 1;
+  --cursor-x: -100px;
+  --cursor-y: -100px;
   width: var(--cursor-size);
   height: var(--cursor-size);
   border: 1px solid rgba(243, 240, 235, 0.45);
@@ -152,7 +153,8 @@ body {
   overflow: hidden;
   isolation: isolate;
   contain: layout style paint;
-  will-change: left, top, width, height;
+  will-change: transform;
+  transform: translate3d(var(--cursor-x), var(--cursor-y), 0) translate(-50%, -50%) scale(var(--cursor-scale));
   background:
     radial-gradient(circle at 50% 52%, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.015) 22%, rgba(255, 255, 255, 0.1) 54%, rgba(0, 0, 0, 0.16) 100%);
   box-shadow:
@@ -163,8 +165,7 @@ body {
   backdrop-filter: blur(10px) saturate(1.14) contrast(1.04);
   -webkit-backdrop-filter: blur(10px) saturate(1.14) contrast(1.04);
   transition:
-    width 0.3s ease,
-    height 0.3s ease,
+    transform 0.12s ease-out,
     background 0.3s ease,
     box-shadow 0.3s ease,
     opacity 0.2s ease,
@@ -172,7 +173,7 @@ body {
 }
 
 .custom-cursor.hover {
-  --cursor-size: 60px;
+  --cursor-scale: 2.5;
   background:
     radial-gradient(circle at 50% 52%, rgba(255, 255, 255, 0.015), rgba(255, 255, 255, 0.01) 24%, rgba(255, 255, 255, 0.14) 58%, rgba(0, 0, 0, 0.18) 100%);
   box-shadow:

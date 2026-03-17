@@ -20,9 +20,8 @@ export default function CustomCursor() {
         return;
       }
 
-      const { offsetWidth, offsetHeight } = cursorRef.current;
-      cursorRef.current.style.left = `${lastX - (offsetWidth / 2)}px`;
-      cursorRef.current.style.top = `${lastY - (offsetHeight / 2)}px`;
+      cursorRef.current.style.setProperty('--cursor-x', `${lastX}px`);
+      cursorRef.current.style.setProperty('--cursor-y', `${lastY}px`);
     };
 
     const updatePosition = (event) => {
