@@ -1,5 +1,5 @@
+import { Analytics } from '@vercel/analytics/react';
 import CustomCursor from './components/CustomCursor';
-import Particles from './components/Particles';
 import ProjectList from './components/ProjectList';
 import './components/ProjectList.css';
 
@@ -7,8 +7,8 @@ function App() {
   return (
     <>
       <CustomCursor />
-      <Particles />
       <ProjectList />
+      <Analytics />
     </>
   );
 }

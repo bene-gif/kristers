@@ -1,48 +1,93 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export default function CustomCursor() {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
+  const cursorRef = useRef(null);
 
   useEffect(() => {
-    const updatePosition = (e) => {
-      setPosition({ x: e.clientX, y: e.clientY });
-    };
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      return undefined;
+    }
 
-    const handleMouseEnter = () => setIsHovering(true);
-    const handleMouseLeave = () => setIsHovering(false);
+    let frameId = 0;
+    let lastX = 0;
+    let lastY = 0;
 
-    window.addEventListener('mousemove', updatePosition);
+    const renderPosition = () => {
+      frameId = 0;
 
-    const interactiveElements = document.querySelectorAll('a, button, .hoverable');
-    interactiveElements.forEach(el => {
-      if (el.hasAttribute('data-cursor-static')) {
+      if (!cursorRef.current) {
         return;
       }
-      el.addEventListener('mouseenter', handleMouseEnter);
-      el.addEventListener('mouseleave', handleMouseLeave);
-    });
+
+      const { offsetWidth, offsetHeight } = cursorRef.current;
+      cursorRef.current.style.left = `${lastX - (offsetWidth / 2)}px`;
+      cursorRef.current.style.top = `${lastY - (offsetHeight / 2)}px`;
+    };
+
+    const updatePosition = (event) => {
+      lastX = event.clientX;
+      lastY = event.clientY;
+
+      if (frameId) {
+        return;
+      }
+
+      frameId = window.requestAnimationFrame(renderPosition);
+    };
+
+    const handlePointerState = (event) => {
+      const target = event.target instanceof Element
+        ? event.target.closest('a, button, .hoverable')
+        : null;
+
+      if (!target || target.hasAttribute('data-cursor-static')) {
+        setIsHovering(false);
+        return;
+      }
+
+      setIsHovering(true);
+    };
+
+    const handlePointerLeave = (event) => {
+      const target = event.target instanceof Element
+        ? event.target.closest('a, button, .hoverable')
+        : null;
+
+      if (!target || target.hasAttribute('data-cursor-static')) {
+        return;
+      }
+
+      const relatedTarget = event.relatedTarget instanceof Element ? event.relatedTarget : null;
+      if (relatedTarget?.closest('a, button, .hoverable') === target) {
+        return;
+      }
+
+      setIsHovering(false);
+    };
+
+    window.addEventListener('pointermove', updatePosition, { passive: true });
+    document.addEventListener('pointerover', handlePointerState);
+    document.addEventListener('pointerout', handlePointerLeave);
 
     return () => {
-      window.removeEventListener('mousemove', updatePosition);
-      interactiveElements.forEach(el => {
-        if (el.hasAttribute('data-cursor-static')) {
-          return;
-        }
-        el.removeEventListener('mouseenter', handleMouseEnter);
-        el.removeEventListener('mouseleave', handleMouseLeave);
-      });
+      if (frameId) {
+        window.cancelAnimationFrame(frameId);
+      }
+
+      window.removeEventListener('pointermove', updatePosition);
+      document.removeEventListener('pointerover', handlePointerState);
+      document.removeEventListener('pointerout', handlePointerLeave);
     };
   }, []);
 
   return (
     <div
+      ref={cursorRef}
       className={`custom-cursor ${isHovering ? 'hover' : ''}`}
-      style={{
-        left: `${position.x}px`,
-        top: `${position.y}px`,
-        transform: `translate(-50%, -50%)`,
-      }}
-    />
+    >
+      <span className="custom-cursor__lens" />
+      <span className="custom-cursor__gloss" />
+    </div>
   );
 }
