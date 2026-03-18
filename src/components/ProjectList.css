@@ -31,17 +31,23 @@
   font-family: var(--font-display);
   font-style: normal;
   font-size: calc(0.9rem * var(--text-scale));
+  line-height: 1.25;
   letter-spacing: 0.02rem;
   text-transform: none;
   opacity: 0.65;
+  overflow: visible;
 }
 
 .page-mark__button {
+  display: inline-flex;
+  align-items: center;
   padding: 0;
   border: 0;
   background: transparent;
   color: inherit;
   cursor: pointer;
+  line-height: 1.25;
+  overflow: visible;
 }
 
 .page-mark__button:hover,
