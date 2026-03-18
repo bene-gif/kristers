@@ -83,7 +83,7 @@
   background: transparent;
   color: inherit;
   cursor: pointer;
-  font-family: var(--font-display);
+  font-family: var(--font-ui);
   font-style: normal;
   font-size: calc(clamp(0.8rem, 1.8vw, 1.15rem) * var(--text-scale));
   letter-spacing: 0.02rem;
@@ -105,7 +105,7 @@
   background: transparent;
   color: inherit;
   cursor: pointer;
-  font-family: var(--font-display);
+  font-family: var(--font-ui);
   font-style: normal;
   font-size: calc(0.72rem * var(--text-scale));
   letter-spacing: 0.02rem;
@@ -123,6 +123,7 @@
 
 .contact-blank__about-text {
   max-width: min(32rem, 78vw);
+  font-family: var(--font-display);
   font-size: calc(clamp(0.9rem, 1.35vw, 1.1rem) * var(--text-scale));
   line-height: 1.35;
   text-align: center;
@@ -711,7 +712,7 @@
   font-size: calc(clamp(1.9rem, 2.1vw, 2.5rem) * var(--text-scale));
   line-height: 0.95;
   font-style: italic;
-  font-weight: 600;
+  font-weight: 200;
   margin-bottom: 0.45rem;
   letter-spacing: -0.04em;
 }
@@ -728,7 +729,7 @@
   display: inline-block;
   font-size: calc(clamp(1.9rem, 2vw, 2.45rem) * var(--text-scale));
   font-style: italic;
-  font-weight: 600;
+  font-weight: 200;
   letter-spacing: -0.04em;
   transition: opacity 0.2s ease, filter 0.2s ease;
 }

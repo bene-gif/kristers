@@ -36,7 +36,7 @@
 .visit-insights-panel__message,
 .visit-insights-panel__close,
 .visit-insights-panel__total-label {
-  font-family: var(--font-display);
+  font-family: var(--font-ui);
   font-size: calc(0.72rem * var(--text-scale));
   font-style: normal;
   letter-spacing: 0.02rem;

@@ -10,7 +10,7 @@
 }
 
 .view-counter__label {
-  font-family: var(--font-display);
+  font-family: var(--font-ui);
   font-size: calc(0.9rem * var(--text-scale));
   font-style: normal;
   letter-spacing: 0.02rem;
@@ -18,7 +18,7 @@
 }
 
 .view-counter__value {
-  font-family: var(--font-display);
+  font-family: var(--font-ui);
   min-width: 3ch;
   font-size: calc(0.9rem * var(--text-scale));
   font-style: normal;
