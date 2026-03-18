@@ -27,11 +27,12 @@
 }
 
 .page-mark__name {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   font-family: var(--font-display);
   font-style: normal;
   font-size: calc(0.9rem * var(--text-scale));
-  line-height: 1.25;
+  line-height: 1.55;
   letter-spacing: 0.02rem;
   text-transform: none;
   opacity: 0.65;
@@ -41,13 +42,15 @@
 .page-mark__button {
   display: inline-flex;
   align-items: center;
-  padding: 0;
+  padding: 0.22em 0 0.28em;
   border: 0;
   background: transparent;
   color: inherit;
   cursor: pointer;
-  line-height: 1.25;
+  line-height: 1.55;
   overflow: visible;
+  appearance: none;
+  -webkit-appearance: none;
 }
 
 .page-mark__button:hover,
