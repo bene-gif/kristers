@@ -226,6 +226,7 @@
   outline: none;
   backdrop-filter: blur(10px);
   touch-action: pan-y;
+  cursor: pointer;
 }
 
 .finder-window__coverflow::after {
