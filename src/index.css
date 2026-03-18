@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Coral+Pixels&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=IBM+Plex+Mono:wght@400;600&family=Jersey+10+Charted&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Monsieur+La+Doulaise&display=swap');
 
 :root {
   --black: #111111;
@@ -6,8 +6,8 @@
   --gray-dark: #2b2b2b;
   --gray-light: #d9d4cd;
 
-  --font-display: 'Cormorant Garamond', 'Times New Roman', serif;
-  --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
+  --font-display: 'Monsieur La Doulaise', cursive;
+  --font-mono: 'Monsieur La Doulaise', cursive;
 
   --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
   --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
@@ -28,7 +28,7 @@ html {
 body {
   margin: 0;
   font-family: var(--font-display);
-  font-style: italic;
+  font-style: normal;
   background-color: var(--white);
   color: var(--black);
   overflow-x: hidden;
@@ -82,7 +82,7 @@ body {
   position: relative;
   z-index: 1;
   color: rgba(34, 34, 34, 0.72);
-  font-family: 'Snell Roundhand', 'Apple Chancery', 'Brush Script MT', cursive;
+  font-family: var(--font-display);
   font-style: normal;
   font-size: clamp(4.5rem, 12vw, 10rem);
   line-height: 0.9;
@@ -162,7 +162,7 @@ body {
 
 /* Typography */
 h1, h2, h3, h4, h5, h6 {
-  font-weight: 600;
+  font-weight: 400;
   line-height: 0.95;
   letter-spacing: -0.04em;
 }
@@ -182,12 +182,12 @@ h3 {
 p {
   font-size: clamp(1rem, 2vw, 1.25rem);
   line-height: 1.1;
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .mono {
   font-family: var(--font-mono);
-  letter-spacing: 0.18em;
+  letter-spacing: 0.04em;
 }
 
 /* Layout */

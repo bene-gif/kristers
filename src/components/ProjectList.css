@@ -28,11 +28,11 @@
 
 .page-mark__name {
   display: inline-block;
-  font-family: 'Coral Pixels', var(--font-mono);
+  font-family: var(--font-display);
   font-style: normal;
   font-size: 0.9rem;
-  letter-spacing: 0.14rem;
-  text-transform: lowercase;
+  letter-spacing: 0.02rem;
+  text-transform: none;
   opacity: 0.65;
 }
 
@@ -74,11 +74,11 @@
   background: transparent;
   color: inherit;
   cursor: pointer;
-  font-family: 'Coral Pixels', var(--font-mono);
+  font-family: var(--font-display);
   font-style: normal;
   font-size: clamp(0.8rem, 1.8vw, 1.15rem);
-  letter-spacing: 0.12rem;
-  text-transform: lowercase;
+  letter-spacing: 0.02rem;
+  text-transform: none;
   opacity: 0.72;
 }
 
@@ -96,11 +96,11 @@
   background: transparent;
   color: inherit;
   cursor: pointer;
-  font-family: 'Coral Pixels', var(--font-mono);
+  font-family: var(--font-display);
   font-style: normal;
   font-size: 0.72rem;
-  letter-spacing: 0.12rem;
-  text-transform: lowercase;
+  letter-spacing: 0.02rem;
+  text-transform: none;
   opacity: 0.68;
 }
 

@@ -36,11 +36,11 @@
 .visit-insights-panel__message,
 .visit-insights-panel__close,
 .visit-insights-panel__total-label {
-  font-family: 'Coral Pixels', var(--font-mono);
+  font-family: var(--font-display);
   font-size: 0.72rem;
   font-style: normal;
-  letter-spacing: 0.11rem;
-  text-transform: lowercase;
+  letter-spacing: 0.02rem;
+  text-transform: none;
 }
 
 .visit-insights-panel__title {
