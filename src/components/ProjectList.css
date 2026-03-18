@@ -88,7 +88,7 @@
   font-size: calc(clamp(0.8rem, 1.8vw, 1.15rem) * var(--text-scale) * var(--ui-text-scale));
   letter-spacing: 0.02rem;
   text-transform: none;
-  opacity: 0.72;
+  opacity: var(--ui-text-opacity);
 }
 
 .contact-blank__prompt {
@@ -110,7 +110,7 @@
   font-size: calc(0.72rem * var(--text-scale) * var(--ui-text-scale));
   letter-spacing: 0.02rem;
   text-transform: none;
-  opacity: 0.68;
+  opacity: var(--ui-text-opacity);
 }
 
 .contact-blank__image {
@@ -128,7 +128,7 @@
   line-height: 1.35;
   text-align: center;
   font-style: normal;
-  opacity: 0.72;
+  opacity: var(--ui-text-opacity);
 }
 
 .home-layout {
@@ -227,7 +227,7 @@
   font-size: calc(0.75rem * var(--text-scale) * var(--ui-text-scale));
   letter-spacing: 0.12em;
   text-transform: lowercase;
-  opacity: 0.8;
+  opacity: var(--ui-text-opacity);
 }
 
 .finder-window__search {
@@ -507,7 +507,7 @@
   padding: 0.35rem 0.8rem 0.45rem;
   font-size: calc(0.62rem * var(--text-scale) * var(--ui-text-scale));
   letter-spacing: 0.08em;
-  opacity: 0.55;
+  opacity: var(--ui-text-opacity);
   border-top: 1px solid rgba(17, 17, 17, 0.08);
   background: rgba(244, 244, 241, 0.92);
 }
@@ -571,7 +571,7 @@
   font-size: calc(0.72rem * var(--text-scale) * var(--ui-text-scale));
   letter-spacing: 0.08em;
   text-transform: lowercase;
-  opacity: 0.74;
+  opacity: var(--ui-text-opacity);
 }
 
 .media-preview__toolbar-spacer {
@@ -621,7 +621,7 @@
   background: rgba(244, 244, 241, 0.94);
   font-size: calc(0.62rem * var(--text-scale) * var(--ui-text-scale));
   letter-spacing: 0.08em;
-  opacity: 0.7;
+  opacity: var(--ui-text-opacity);
 }
 
 .media-preview[data-closing='false'] {
