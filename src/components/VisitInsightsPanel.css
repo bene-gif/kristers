@@ -14,7 +14,6 @@
   backdrop-filter: blur(16px);
   color: var(--black);
   font-style: normal;
-  opacity: var(--ui-text-opacity);
 }
 
 .visit-insights-panel__header,
@@ -36,8 +35,22 @@
 .visit-insights-panel__recent-network,
 .visit-insights-panel__message,
 .visit-insights-panel__close,
-.visit-insights-panel__total-label {
+.visit-insights-panel__total-label,
+.visit-insights-panel__title,
+.visit-insights-panel__total-value,
+.visit-insights-panel__list-item,
+.visit-insights-panel__recent-item,
+.visit-insights-panel__recent-item time {
   font-family: var(--font-ui);
+  opacity: var(--ui-text-opacity);
+}
+
+.visit-insights-panel__eyebrow,
+.visit-insights-panel__section-title,
+.visit-insights-panel__recent-network,
+.visit-insights-panel__message,
+.visit-insights-panel__close,
+.visit-insights-panel__total-label {
   font-size: calc(0.72rem * var(--text-scale) * var(--ui-text-scale));
   font-style: normal;
   letter-spacing: 0.02rem;
