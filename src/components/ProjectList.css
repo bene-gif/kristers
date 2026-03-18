@@ -112,6 +112,12 @@
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
 }
 
+.home-layout {
+  min-height: calc(100vh - 5.5rem);
+  display: flex;
+  flex-direction: column;
+}
+
 .finder-gallery {
   display: flex;
   width: 100%;
@@ -663,7 +669,7 @@
   align-items: end;
   gap: 2rem;
   justify-content: center;
-  margin: 0 auto;
+  margin: auto auto 0;
   color: inherit;
 }
 
@@ -756,6 +762,10 @@
 
   .finder-gallery {
     margin: 1.25rem auto 1.75rem;
+  }
+
+  .home-layout {
+    min-height: calc(100vh - 4.25rem);
   }
 
   .finder-window__toolbar {

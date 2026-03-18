@@ -679,15 +679,15 @@ function ProjectList() {
           </div>
         </section>
       ) : (
-        <>
+        <section className="home-layout" aria-label="home page">
           {renderFinderWindow(videoItems, activeVideoIndex, setActiveVideoIndex, 'video material', 'video')}
 
-          <section className="work-groups">
+          <div className="work-groups">
             <div className="work-group work-group--counter">
               <ViewCounter />
             </div>
-          </section>
-        </>
+          </div>
+        </section>
       )}
     </main>
   );
