@@ -717,6 +717,13 @@ function ProjectList() {
               src={aboutImage}
               alt="About me"
             />
+            <p className="contact-blank__about-text">
+              Audiovisual artist based in Latvia.
+              <br />
+              Currently studying at the Art Academy of Latvia.
+              <br />
+              Working with moving image and sound
+            </p>
           </div>
         </section>
       ) : (
