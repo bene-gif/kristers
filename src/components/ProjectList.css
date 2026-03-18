@@ -123,7 +123,7 @@
 
 .contact-blank__about-text {
   max-width: min(32rem, 78vw);
-  font-family: var(--font-display);
+  font-family: var(--font-ui);
   font-size: calc(clamp(0.9rem, 1.35vw, 1.1rem) * var(--text-scale));
   line-height: 1.35;
   text-align: center;
