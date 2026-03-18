@@ -193,6 +193,33 @@ function ProjectList() {
     setActiveItem((current) => (current + direction + items.length) % items.length);
   };
 
+  const handleCoverflowClick = (event, items, activeItem, setActiveItem, windowId) => {
+    if (event.target instanceof Element && event.target.closest('.gallery-card')) {
+      return;
+    }
+
+    const coverflow = event.currentTarget;
+    const rect = coverflow.getBoundingClientRect();
+    const relativeX = event.clientX - rect.left;
+    const centerBand = rect.width * 0.2;
+    const centerStart = (rect.width / 2) - (centerBand / 2);
+    const centerEnd = centerStart + centerBand;
+
+    setActiveWindow(windowId);
+
+    if (relativeX >= centerStart && relativeX <= centerEnd) {
+      openPreview(items, activeItem, windowId);
+      return;
+    }
+
+    if (windowId === 'video') {
+      setWindowAudioVideoIndex(null);
+    }
+
+    const direction = relativeX > rect.width / 2 ? 1 : -1;
+    setActiveItem((current) => (current + direction + items.length) % items.length);
+  };
+
   const getPreviewMotionVars = (windowId) => {
     const originElement = windowRefs.current[windowId];
     const elementRect = originElement?.getBoundingClientRect?.();
@@ -438,6 +465,7 @@ function ProjectList() {
           onFocus={() => setActiveWindow(windowId)}
           onBlur={() => setActiveWindow(null)}
           onKeyDown={(event) => handleKeyDown(event, items, setActiveItem)}
+          onClick={(event) => handleCoverflowClick(event, items, activeItem, setActiveItem, windowId)}
           onTouchStart={(event) => handleCoverflowTouchStart(event, windowId)}
           onTouchEnd={(event) => handleCoverflowTouchEnd(event, items, setActiveItem)}
           onTouchCancel={() => {
