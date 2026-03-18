@@ -11,7 +11,7 @@
 
 .view-counter__label {
   font-family: var(--font-display);
-  font-size: 0.9rem;
+  font-size: calc(0.9rem * var(--text-scale));
   font-style: normal;
   letter-spacing: 0.02rem;
   text-transform: none;
@@ -20,7 +20,7 @@
 .view-counter__value {
   font-family: var(--font-display);
   min-width: 3ch;
-  font-size: 0.9rem;
+  font-size: calc(0.9rem * var(--text-scale));
   font-style: normal;
   letter-spacing: 0.02rem;
   line-height: 1;
@@ -33,12 +33,12 @@
   }
 
   .view-counter__label {
-    font-size: 0.64rem;
+    font-size: calc(0.64rem * var(--text-scale));
     letter-spacing: 0.13rem;
   }
 
   .view-counter__value {
-    font-size: 0.64rem;
+    font-size: calc(0.64rem * var(--text-scale));
     letter-spacing: 0.13rem;
   }
 }

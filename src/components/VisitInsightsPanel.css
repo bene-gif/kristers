@@ -37,14 +37,14 @@
 .visit-insights-panel__close,
 .visit-insights-panel__total-label {
   font-family: var(--font-display);
-  font-size: 0.72rem;
+  font-size: calc(0.72rem * var(--text-scale));
   font-style: normal;
   letter-spacing: 0.02rem;
   text-transform: none;
 }
 
 .visit-insights-panel__title {
-  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-size: calc(clamp(1.6rem, 3vw, 2.4rem) * var(--text-scale));
   line-height: 0.9;
 }
 
@@ -70,7 +70,7 @@
 }
 
 .visit-insights-panel__total-value {
-  font-size: 2rem;
+  font-size: calc(2rem * var(--text-scale));
   line-height: 1;
 }
 
@@ -94,7 +94,7 @@
 
 .visit-insights-panel__list-item,
 .visit-insights-panel__recent-item {
-  font-size: 0.95rem;
+  font-size: calc(0.95rem * var(--text-scale));
   line-height: 1.15;
 }
 
@@ -110,7 +110,7 @@
 }
 
 .visit-insights-panel__recent-item time {
-  font-size: 0.68rem;
+  font-size: calc(0.68rem * var(--text-scale));
   letter-spacing: 0.08rem;
   text-align: right;
 }
