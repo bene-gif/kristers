@@ -54,6 +54,7 @@ function ProjectList() {
   const [activeVideoIndex, setActiveVideoIndex] = useState(0);
   const [windowAudioVideoIndex, setWindowAudioVideoIndex] = useState(null);
   const [motionWindow, setMotionWindow] = useState(null);
+  const [coverflowHoverZones, setCoverflowHoverZones] = useState({});
   const [activePage, setActivePage] = useState('home');
   const [activeWindow, setActiveWindow] = useState(null);
   const [showCopyPrompt, setShowCopyPrompt] = useState(false);
@@ -193,6 +194,18 @@ function ProjectList() {
     setActiveItem((current) => (current + direction + items.length) % items.length);
   };
 
+  const getCoverflowZone = (relativeX, width) => {
+    const centerBand = width * 0.2;
+    const centerStart = (width / 2) - (centerBand / 2);
+    const centerEnd = centerStart + centerBand;
+
+    if (relativeX >= centerStart && relativeX <= centerEnd) {
+      return 'center';
+    }
+
+    return relativeX > width / 2 ? 'right' : 'left';
+  };
+
   const handleCoverflowClick = (event, items, activeItem, setActiveItem, windowId) => {
     if (event.target instanceof Element && event.target.closest('.gallery-card')) {
       return;
@@ -201,13 +214,11 @@ function ProjectList() {
     const coverflow = event.currentTarget;
     const rect = coverflow.getBoundingClientRect();
     const relativeX = event.clientX - rect.left;
-    const centerBand = rect.width * 0.2;
-    const centerStart = (rect.width / 2) - (centerBand / 2);
-    const centerEnd = centerStart + centerBand;
+    const zone = getCoverflowZone(relativeX, rect.width);
 
     setActiveWindow(windowId);
 
-    if (relativeX >= centerStart && relativeX <= centerEnd) {
+    if (zone === 'center') {
       openPreview(items, activeItem, windowId);
       return;
     }
@@ -216,8 +227,35 @@ function ProjectList() {
       setWindowAudioVideoIndex(null);
     }
 
-    const direction = relativeX > rect.width / 2 ? 1 : -1;
+    const direction = zone === 'right' ? 1 : -1;
     setActiveItem((current) => (current + direction + items.length) % items.length);
+  };
+
+  const handleCoverflowPointerMove = (event, windowId) => {
+    if (isMobileViewport()) {
+      return;
+    }
+
+    const coverflow = event.currentTarget;
+    const rect = coverflow.getBoundingClientRect();
+    const relativeX = event.clientX - rect.left;
+    const zone = getCoverflowZone(relativeX, rect.width);
+
+    setCoverflowHoverZones((current) => (
+      current[windowId] === zone ? current : { ...current, [windowId]: zone }
+    ));
+  };
+
+  const clearCoverflowPointerZone = (windowId) => {
+    setCoverflowHoverZones((current) => {
+      if (!current[windowId]) {
+        return current;
+      }
+
+      const next = { ...current };
+      delete next[windowId];
+      return next;
+    });
   };
 
   const getPreviewMotionVars = (windowId) => {
@@ -460,12 +498,15 @@ function ProjectList() {
 
         <div
           className={`finder-window__coverflow ${motionWindow === windowId ? 'is-scrolling' : ''}`}
+          data-click-zone={coverflowHoverZones[windowId] || 'center'}
           tabIndex={0}
           aria-label="Use left and right arrow keys or swipe to browse gallery"
           onFocus={() => setActiveWindow(windowId)}
           onBlur={() => setActiveWindow(null)}
           onKeyDown={(event) => handleKeyDown(event, items, setActiveItem)}
           onClick={(event) => handleCoverflowClick(event, items, activeItem, setActiveItem, windowId)}
+          onMouseMove={(event) => handleCoverflowPointerMove(event, windowId)}
+          onMouseLeave={() => clearCoverflowPointerZone(windowId)}
           onTouchStart={(event) => handleCoverflowTouchStart(event, windowId)}
           onTouchEnd={(event) => handleCoverflowTouchEnd(event, items, setActiveItem)}
           onTouchCancel={() => {
