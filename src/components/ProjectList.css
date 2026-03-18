@@ -235,6 +235,18 @@
   cursor: pointer;
 }
 
+.finder-window__coverflow[data-click-zone='left'] {
+  cursor: w-resize;
+}
+
+.finder-window__coverflow[data-click-zone='right'] {
+  cursor: e-resize;
+}
+
+.finder-window__coverflow[data-click-zone='center'] {
+  cursor: zoom-in;
+}
+
 .finder-window__coverflow::after {
   content: '';
   position: absolute;
