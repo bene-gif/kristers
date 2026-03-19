@@ -6,7 +6,7 @@
   width: fit-content;
   margin-left: auto;
   color: inherit;
-  opacity: var(--ui-text-opacity);
+  opacity: 0.88;
 }
 
 .view-counter__label {
