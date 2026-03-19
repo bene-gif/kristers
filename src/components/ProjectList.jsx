@@ -78,9 +78,10 @@ const videoItems = videoSources.map((video, index) => ({
   mimeType: getVideoMimeType(video),
 }));
 
+const mediaItems = [...videoItems, ...imageItems];
+
 function ProjectList() {
-  const [activeVideoIndex, setActiveVideoIndex] = useState(0);
-  const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const [activeMediaIndex, setActiveMediaIndex] = useState(0);
   const [windowAudioVideoIndex, setWindowAudioVideoIndex] = useState(null);
   const [motionWindow, setMotionWindow] = useState(null);
   const [coverflowHoverZones, setCoverflowHoverZones] = useState({});
@@ -150,7 +151,7 @@ function ProjectList() {
   const isMobileViewport = () => window.matchMedia('(max-width: 768px)').matches;
 
   const activateMobileWindowAudio = (index) => {
-    const videoWindow = windowRefs.current.video;
+    const videoWindow = windowRefs.current.media;
     const visibleVideos = videoWindow?.querySelectorAll?.('.gallery-card video');
 
     visibleVideos?.forEach((video) => {
@@ -252,9 +253,7 @@ function ProjectList() {
       return;
     }
 
-    if (windowId === 'video') {
-      setWindowAudioVideoIndex(null);
-    }
+    setWindowAudioVideoIndex(null);
 
     const direction = zone === 'right' ? 1 : -1;
     setActiveItem((current) => (current + direction + items.length) % items.length);
@@ -319,7 +318,7 @@ function ProjectList() {
     }
 
     const motionVars = getPreviewMotionVars(windowId);
-    const isVideo = windowId === 'video';
+    const isVideo = Boolean(item.video);
     previewOpenedAtRef.current = window.performance.now();
 
     setPreviewItem({
@@ -359,15 +358,9 @@ function ProjectList() {
         return;
       }
 
-      if (activeWindow === 'video') {
+      if (activeWindow === 'media') {
         event.preventDefault();
-        openPreview(videoItems, activeVideoIndex, 'video');
-        return;
-      }
-
-      if (activeWindow === 'image') {
-        event.preventDefault();
-        openPreview(imageItems, activeImageIndex, 'image');
+        openPreview(mediaItems, activeMediaIndex, 'media');
       }
     };
 
@@ -375,10 +368,10 @@ function ProjectList() {
     return () => {
       window.removeEventListener('keydown', handleGlobalSpace, { capture: true });
     };
-  }, [activeImageIndex, activeVideoIndex, activeWindow, previewItem]);
+  }, [activeMediaIndex, activeWindow, previewItem]);
 
   useEffect(() => {
-    const preloadTargets = videoItems
+    const preloadTargets = mediaItems
       .map((item) => item.previewVideo)
       .filter(Boolean);
 
@@ -402,7 +395,7 @@ function ProjectList() {
     }
 
     const frameId = window.requestAnimationFrame(() => {
-      const videoWindow = windowRefs.current.video;
+      const videoWindow = windowRefs.current.media;
       const visibleVideos = videoWindow?.querySelectorAll?.('.gallery-card video');
 
       visibleVideos?.forEach((video) => {
@@ -411,7 +404,7 @@ function ProjectList() {
         }
         const itemIndex = Number(video.dataset.index);
         const isVisibleCard = Number.isFinite(itemIndex)
-          && Math.abs(getOffset(itemIndex, activeVideoIndex, videoItems)) <= 1;
+          && Math.abs(getOffset(itemIndex, activeMediaIndex, mediaItems)) <= 1;
         const hasWindowAudio = itemIndex === windowAudioVideoIndex;
 
         video.muted = !hasWindowAudio;
@@ -430,22 +423,22 @@ function ProjectList() {
     return () => {
       window.cancelAnimationFrame(frameId);
     };
-  }, [activeVideoIndex, previewItem, windowAudioVideoIndex]);
+  }, [activeMediaIndex, previewItem, windowAudioVideoIndex]);
 
   useEffect(() => {
     setWindowAudioVideoIndex(null);
-  }, [activeVideoIndex, activePage, previewItem]);
+  }, [activeMediaIndex, activePage, previewItem]);
 
   useEffect(() => {
-    setMotionWindow('video');
+    setMotionWindow('media');
     const timerId = window.setTimeout(() => {
-      setMotionWindow((current) => (current === 'video' ? null : current));
+      setMotionWindow((current) => (current === 'media' ? null : current));
     }, 180);
 
     return () => {
       window.clearTimeout(timerId);
     };
-  }, [activeVideoIndex]);
+  }, [activeMediaIndex]);
 
   useEffect(() => {
     if (!previewItem?.isVideo) {
@@ -550,18 +543,17 @@ function ProjectList() {
         >
           <div className="coverflow-strip">
             {visibleItems.map(({ item, index, offset }) => {
-              const isVideoWindow = windowId === 'video';
-              const shouldRenderVideoCard = isVideoWindow && Boolean(item.previewVideo);
+              const isVideoCard = Boolean(item.previewVideo);
 
               return (
                 <article
-                  className={`gallery-card ${item.accent} ${isVideoWindow ? 'gallery-card--video' : ''} ${index === activeItem ? 'is-active' : ''}`}
+                  className={`gallery-card ${item.accent} ${isVideoCard ? 'gallery-card--video' : ''} ${index === activeItem ? 'is-active' : ''}`}
                   key={item.title}
                   style={getCardStyle(offset)}
                   onClick={() => {
                     setActiveWindow(windowId);
                     if (index === activeItem) {
-                      if (isVideoWindow && isMobileViewport()) {
+                      if (isVideoCard && isMobileViewport()) {
                         setWindowAudioVideoIndex(index);
                         activateMobileWindowAudio(index);
                         return;
@@ -569,14 +561,12 @@ function ProjectList() {
                       openPreview(items, index, windowId);
                       return;
                     }
-                    if (isVideoWindow) {
-                      setWindowAudioVideoIndex(null);
-                    }
+                    setWindowAudioVideoIndex(null);
                     setActiveItem(index);
                   }}
                 >
                   <div className="gallery-card__image">
-                    {shouldRenderVideoCard ? (
+                    {isVideoCard ? (
                       <video
                         data-index={index}
                         autoPlay
@@ -597,10 +587,10 @@ function ProjectList() {
                         />
                       </video>
                     ) : null}
-                    {!isVideoWindow && item.previewImage ? <img src={item.previewImage} alt={item.title} /> : null}
+                    {!isVideoCard && item.previewImage ? <img src={item.previewImage} alt={item.title} /> : null}
                   </div>
                   <div className="gallery-card__reflection" aria-hidden="true">
-                    {!isVideoWindow && item.previewImage ? <img src={item.previewImage} alt="" /> : null}
+                    {!isVideoCard && item.previewImage ? <img src={item.previewImage} alt="" /> : null}
                   </div>
                 </article>
               );
@@ -758,10 +748,7 @@ function ProjectList() {
         </section>
       ) : (
         <section className="home-layout" aria-label="home page">
-          {renderFinderWindow(videoItems, activeVideoIndex, setActiveVideoIndex, 'video material', 'video')}
-          {imageItems.length > 0
-            ? renderFinderWindow(imageItems, activeImageIndex, setActiveImageIndex, 'photo material', 'image')
-            : null}
+          {renderFinderWindow(mediaItems, activeMediaIndex, setActiveMediaIndex, 'media material', 'media')}
 
           <div className="work-groups">
             <div className="work-group work-group--counter">
