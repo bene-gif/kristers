@@ -744,6 +744,11 @@ function ProjectList() {
       ) : activePage === 'about' ? (
         <section className="contact-blank" aria-label="about page">
           <div className="contact-blank__panel">
+            <img
+              className="contact-blank__media"
+              src="/sound-498-x-286-gif-g572c3pgy69sr8nv.gif"
+              alt="Speaker graphic"
+            />
             <p className="contact-blank__about-text">
               Audiovisual artist based in Latvia.
               <br />
