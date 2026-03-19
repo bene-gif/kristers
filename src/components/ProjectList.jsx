@@ -24,8 +24,6 @@ const videoPreviewSources = Object.entries(videoPreviewModules)
   .sort(([left], [right]) => left.localeCompare(right, undefined, { numeric: true }))
   .map(([, source]) => source);
 
-const aboutImage = imageModules['../assets/media/images/aboutme.jpeg'];
-
 const videoAccents = ['gallery-card--mist', 'gallery-card--shadow', 'gallery-card--forest', 'gallery-card--ember', 'gallery-card--warm'];
 
 const getVideoMimeType = (source) => {
@@ -712,11 +710,6 @@ function ProjectList() {
       ) : activePage === 'about' ? (
         <section className="contact-blank" aria-label="about page">
           <div className="contact-blank__panel">
-            <img
-              className="contact-blank__image"
-              src={aboutImage}
-              alt="About me"
-            />
             <p className="contact-blank__about-text">
               Audiovisual artist based in Latvia.
               <br />

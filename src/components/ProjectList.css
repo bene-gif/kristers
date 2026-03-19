@@ -113,14 +113,6 @@
   opacity: var(--ui-text-opacity);
 }
 
-.contact-blank__image {
-  width: min(32rem, 78vw);
-  max-height: 58vh;
-  object-fit: contain;
-  border-radius: 0.35rem;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
-}
-
 .contact-blank__about-text {
   max-width: min(32rem, 78vw);
   font-family: var(--font-ui);
