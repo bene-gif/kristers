@@ -1,6 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import ViewCounter from './ViewCounter';
 
+const sourceMediaModules = import.meta.glob('../assets/media/videos/*.{png,jpg,jpeg,webp,avif,mov,mp4,m4v,webm}', {
+  eager: true,
+  import: 'default',
+});
+
 const imageModules = import.meta.glob('../assets/media/images/*.{png,jpg,jpeg,webp,avif}', {
   eager: true,
   import: 'default',
@@ -29,6 +34,8 @@ const getMediaStem = (path) => getMediaFileName(path).replace(/\.[^.]+$/, '');
 const formatMediaTitle = (prefix, index) => `${prefix}-${String(index + 1).padStart(2, '0')}`;
 const compareMediaPaths = (leftPath, rightPath) => getMediaFileName(leftPath)
   .localeCompare(getMediaFileName(rightPath), undefined, { numeric: true, sensitivity: 'base' });
+const isImageFile = (path) => /\.(png|jpe?g|webp|avif)$/i.test(path);
+const isVideoFile = (path) => /\.(mov|mp4|m4v|webm)$/i.test(path);
 
 const imagePreviewMap = new Map(
   Object.entries(imagePreviewModules).map(([path, source]) => [getMediaStem(path), source]),
@@ -37,23 +44,6 @@ const imagePreviewMap = new Map(
 const videoPreviewMap = new Map(
   Object.entries(videoPreviewModules).map(([path, source]) => [getMediaStem(path), source]),
 );
-
-const imageItems = Object.entries(imageModules)
-  .sort(([left], [right]) => compareMediaPaths(left, right))
-  .filter(([path]) => getMediaStem(path).toLowerCase() !== 'aboutme')
-  .map(([path, image], index) => {
-    const stem = getMediaStem(path);
-
-    return {
-      title: formatMediaTitle('photo', index),
-      meta: 'photo material',
-      description: 'Image preview in the pop-up viewer.',
-      accent: imageAccents[index % imageAccents.length],
-      image,
-      previewImage: imagePreviewMap.get(stem) ?? image,
-      sourcePath: path,
-    };
-  });
 
 const getVideoMimeType = (source) => {
   if (source.endsWith('.mp4') || source.endsWith('.m4v')) {
@@ -67,25 +57,45 @@ const getVideoMimeType = (source) => {
   return undefined;
 };
 
-const videoItems = Object.entries(videoModules)
+const mediaItems = Object.entries(sourceMediaModules)
+  .filter(([path]) => {
+    const stem = getMediaStem(path).toLowerCase();
+    return stem !== 'aboutme' && (isImageFile(path) || isVideoFile(path));
+  })
   .sort(([left], [right]) => compareMediaPaths(left, right))
-  .map(([path, video], index) => ({
-    title: `video-${String(index + 1).padStart(2, '0')}`,
-    meta: 'video material',
-    description: 'Video preview with sound enabled in the pop-up viewer.',
-    accent: videoAccents[index % videoAccents.length],
-    video,
-    previewVideo: videoPreviewMap.get(getMediaStem(path)) ?? video,
-    mimeType: getVideoMimeType(video),
-    sourcePath: path,
-  }));
+  .map(([path], index) => {
+    const stem = getMediaStem(path);
 
-const mediaItems = [...videoItems, ...imageItems]
-  .sort((left, right) => compareMediaPaths(left.sourcePath, right.sourcePath))
-  .map((item, index) => ({
-    ...item,
-    title: formatMediaTitle(item.video ? 'video' : 'photo', index),
-  }));
+    if (isImageFile(path)) {
+      const image = imageModules[`../assets/media/images/${getMediaFileName(path)}`];
+      const previewImage = imagePreviewMap.get(stem) ?? image;
+
+      return {
+        title: formatMediaTitle('photo', index),
+        meta: 'photo material',
+        description: 'Image preview in the pop-up viewer.',
+        accent: imageAccents[index % imageAccents.length],
+        image,
+        previewImage,
+        sourcePath: path,
+      };
+    }
+
+    const video = videoModules[`../assets/media/videos-web/${stem}.mp4`];
+    const previewVideo = videoPreviewMap.get(stem) ?? video;
+
+    return {
+      title: formatMediaTitle('video', index),
+      meta: 'video material',
+      description: 'Video preview with sound enabled in the pop-up viewer.',
+      accent: videoAccents[index % videoAccents.length],
+      video,
+      previewVideo,
+      mimeType: getVideoMimeType(video ?? ''),
+      sourcePath: path,
+    };
+  })
+  .filter((item) => (item.video ? Boolean(item.video) : Boolean(item.image)));
 
 function ProjectList() {
   const [activeMediaIndex, setActiveMediaIndex] = useState(0);
