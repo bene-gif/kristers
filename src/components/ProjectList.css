@@ -444,64 +444,19 @@
   background: #090b10;
 }
 
-.gallery-card--warm .gallery-card__image {
-  background:
-    linear-gradient(180deg, rgba(255, 211, 162, 0.25), rgba(55, 26, 10, 0.8)),
-    linear-gradient(135deg, #7d5837, #21150f);
-}
-
-.gallery-card--warm .gallery-card__reflection {
-  background:
-    linear-gradient(180deg, rgba(255, 211, 162, 0.25), rgba(55, 26, 10, 0.8)),
-    linear-gradient(135deg, #7d5837, #21150f);
-}
-
-.gallery-card--forest .gallery-card__image {
-  background:
-    linear-gradient(180deg, rgba(165, 209, 184, 0.18), rgba(18, 42, 34, 0.84)),
-    linear-gradient(135deg, #35554a, #0e1714);
-}
-
-.gallery-card--forest .gallery-card__reflection {
-  background:
-    linear-gradient(180deg, rgba(165, 209, 184, 0.18), rgba(18, 42, 34, 0.84)),
-    linear-gradient(135deg, #35554a, #0e1714);
-}
-
-.gallery-card--ember .gallery-card__image {
-  background:
-    linear-gradient(180deg, rgba(255, 218, 184, 0.18), rgba(92, 29, 20, 0.9)),
-    linear-gradient(135deg, #6b2e16, #130b08);
-}
-
-.gallery-card--ember .gallery-card__reflection {
-  background:
-    linear-gradient(180deg, rgba(255, 218, 184, 0.18), rgba(92, 29, 20, 0.9)),
-    linear-gradient(135deg, #6b2e16, #130b08);
-}
-
-.gallery-card--mist .gallery-card__image {
-  background:
-    linear-gradient(180deg, rgba(199, 212, 225, 0.24), rgba(35, 43, 58, 0.88)),
-    linear-gradient(135deg, #58667b, #161a22);
-}
-
-.gallery-card--mist .gallery-card__reflection {
-  background:
-    linear-gradient(180deg, rgba(199, 212, 225, 0.24), rgba(35, 43, 58, 0.88)),
-    linear-gradient(135deg, #58667b, #161a22);
-}
-
-.gallery-card--shadow .gallery-card__image {
-  background:
-    linear-gradient(180deg, rgba(187, 187, 187, 0.16), rgba(17, 17, 17, 0.92)),
-    linear-gradient(135deg, #505050, #0f0f0f);
-}
-
+.gallery-card--warm .gallery-card__image,
+.gallery-card--warm .gallery-card__reflection,
+.gallery-card--forest .gallery-card__image,
+.gallery-card--forest .gallery-card__reflection,
+.gallery-card--ember .gallery-card__image,
+.gallery-card--ember .gallery-card__reflection,
+.gallery-card--mist .gallery-card__image,
+.gallery-card--mist .gallery-card__reflection,
+.gallery-card--shadow .gallery-card__image,
 .gallery-card--shadow .gallery-card__reflection {
   background:
-    linear-gradient(180deg, rgba(187, 187, 187, 0.16), rgba(17, 17, 17, 0.92)),
-    linear-gradient(135deg, #505050, #0f0f0f);
+    linear-gradient(180deg, rgba(244, 242, 238, 0.18), rgba(34, 34, 34, 0.78)),
+    linear-gradient(135deg, #d6d1c9, #1a1a1a);
 }
 
 .finder-window__status {
