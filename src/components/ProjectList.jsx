@@ -21,14 +21,6 @@ const videoPreviewModules = import.meta.glob('../assets/media/videos-preview/*.{
   import: 'default',
 });
 
-const videoSources = Object.entries(videoModules)
-  .sort(([left], [right]) => left.localeCompare(right, undefined, { numeric: true }))
-  .map(([, source]) => source);
-
-const videoPreviewSources = Object.entries(videoPreviewModules)
-  .sort(([left], [right]) => left.localeCompare(right, undefined, { numeric: true }))
-  .map(([, source]) => source);
-
 const videoAccents = ['gallery-card--mist', 'gallery-card--shadow', 'gallery-card--forest', 'gallery-card--ember', 'gallery-card--warm'];
 const imageAccents = ['gallery-card--warm', 'gallery-card--mist', 'gallery-card--forest', 'gallery-card--shadow', 'gallery-card--ember'];
 
@@ -40,6 +32,10 @@ const compareMediaPaths = (leftPath, rightPath) => getMediaFileName(leftPath)
 
 const imagePreviewMap = new Map(
   Object.entries(imagePreviewModules).map(([path, source]) => [getMediaStem(path), source]),
+);
+
+const videoPreviewMap = new Map(
+  Object.entries(videoPreviewModules).map(([path, source]) => [getMediaStem(path), source]),
 );
 
 const imageItems = Object.entries(imageModules)
