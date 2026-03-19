@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import ViewCounter from './ViewCounter';
 
-const sourceMediaModules = import.meta.glob('../assets/media/videos/*.{png,jpg,jpeg,webp,avif,mov,mp4,m4v,webm}', {
-  eager: true,
-  import: 'default',
-});
+const sourceMediaPaths = Object.keys(
+  import.meta.glob('../assets/media/videos/*.{png,jpg,jpeg,webp,avif,mov,mp4,m4v,webm}'),
+);
 
 const imageModules = import.meta.glob('../assets/media/images/*.{png,jpg,jpeg,webp,avif}', {
   eager: true,
@@ -57,13 +56,13 @@ const getVideoMimeType = (source) => {
   return undefined;
 };
 
-const mediaItems = Object.entries(sourceMediaModules)
-  .filter(([path]) => {
+const mediaItems = sourceMediaPaths
+  .filter((path) => {
     const stem = getMediaStem(path).toLowerCase();
     return stem !== 'aboutme' && (isImageFile(path) || isVideoFile(path));
   })
-  .sort(([left], [right]) => compareMediaPaths(left, right))
-  .map(([path], index) => {
+  .sort(compareMediaPaths)
+  .map((path, index) => {
     const stem = getMediaStem(path);
 
     if (isImageFile(path)) {
