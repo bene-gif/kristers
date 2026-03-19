@@ -35,13 +35,15 @@ const imageAccents = ['gallery-card--warm', 'gallery-card--mist', 'gallery-card-
 const getMediaFileName = (path) => path.split('/').pop() ?? path;
 const getMediaStem = (path) => getMediaFileName(path).replace(/\.[^.]+$/, '');
 const formatMediaTitle = (prefix, index) => `${prefix}-${String(index + 1).padStart(2, '0')}`;
+const compareMediaPaths = (leftPath, rightPath) => getMediaFileName(leftPath)
+  .localeCompare(getMediaFileName(rightPath), undefined, { numeric: true, sensitivity: 'base' });
 
 const imagePreviewMap = new Map(
   Object.entries(imagePreviewModules).map(([path, source]) => [getMediaStem(path), source]),
 );
 
 const imageItems = Object.entries(imageModules)
-  .sort(([left], [right]) => left.localeCompare(right, undefined, { numeric: true }))
+  .sort(([left], [right]) => compareMediaPaths(left, right))
   .filter(([path]) => getMediaStem(path).toLowerCase() !== 'aboutme')
   .map(([path, image], index) => {
     const stem = getMediaStem(path);
@@ -53,6 +55,7 @@ const imageItems = Object.entries(imageModules)
       accent: imageAccents[index % imageAccents.length],
       image,
       previewImage: imagePreviewMap.get(stem) ?? image,
+      sourcePath: path,
     };
   });
 
@@ -68,17 +71,25 @@ const getVideoMimeType = (source) => {
   return undefined;
 };
 
-const videoItems = videoSources.map((video, index) => ({
-  title: `video-${String(index + 1).padStart(2, '0')}`,
-  meta: 'video material',
-  description: 'Video preview with sound enabled in the pop-up viewer.',
-  accent: videoAccents[index % videoAccents.length],
-  video,
-  previewVideo: videoPreviewSources[index] ?? video,
-  mimeType: getVideoMimeType(video),
-}));
+const videoItems = Object.entries(videoModules)
+  .sort(([left], [right]) => compareMediaPaths(left, right))
+  .map(([path, video], index) => ({
+    title: `video-${String(index + 1).padStart(2, '0')}`,
+    meta: 'video material',
+    description: 'Video preview with sound enabled in the pop-up viewer.',
+    accent: videoAccents[index % videoAccents.length],
+    video,
+    previewVideo: videoPreviewMap.get(getMediaStem(path)) ?? video,
+    mimeType: getVideoMimeType(video),
+    sourcePath: path,
+  }));
 
-const mediaItems = [...videoItems, ...imageItems];
+const mediaItems = [...videoItems, ...imageItems]
+  .sort((left, right) => compareMediaPaths(left.sourcePath, right.sourcePath))
+  .map((item, index) => ({
+    ...item,
+    title: formatMediaTitle(item.video ? 'video' : 'photo', index),
+  }));
 
 function ProjectList() {
   const [activeMediaIndex, setActiveMediaIndex] = useState(0);
