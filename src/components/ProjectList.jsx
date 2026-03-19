@@ -6,6 +6,11 @@ const imageModules = import.meta.glob('../assets/media/images/*.{png,jpg,jpeg,we
   import: 'default',
 });
 
+const imagePreviewModules = import.meta.glob('../assets/media/images-preview/*.{png,jpg,jpeg,webp,avif}', {
+  eager: true,
+  import: 'default',
+});
+
 const videoModules = import.meta.glob('../assets/media/videos-web/*.{mp4,webm,m4v}', {
   eager: true,
   import: 'default',
@@ -25,6 +30,31 @@ const videoPreviewSources = Object.entries(videoPreviewModules)
   .map(([, source]) => source);
 
 const videoAccents = ['gallery-card--mist', 'gallery-card--shadow', 'gallery-card--forest', 'gallery-card--ember', 'gallery-card--warm'];
+const imageAccents = ['gallery-card--warm', 'gallery-card--mist', 'gallery-card--forest', 'gallery-card--shadow', 'gallery-card--ember'];
+
+const getMediaFileName = (path) => path.split('/').pop() ?? path;
+const getMediaStem = (path) => getMediaFileName(path).replace(/\.[^.]+$/, '');
+const formatMediaTitle = (prefix, index) => `${prefix}-${String(index + 1).padStart(2, '0')}`;
+
+const imagePreviewMap = new Map(
+  Object.entries(imagePreviewModules).map(([path, source]) => [getMediaStem(path), source]),
+);
+
+const imageItems = Object.entries(imageModules)
+  .sort(([left], [right]) => left.localeCompare(right, undefined, { numeric: true }))
+  .filter(([path]) => getMediaStem(path).toLowerCase() !== 'aboutme')
+  .map(([path, image], index) => {
+    const stem = getMediaStem(path);
+
+    return {
+      title: formatMediaTitle('photo', index),
+      meta: 'photo material',
+      description: 'Image preview in the pop-up viewer.',
+      accent: imageAccents[index % imageAccents.length],
+      image,
+      previewImage: imagePreviewMap.get(stem) ?? image,
+    };
+  });
 
 const getVideoMimeType = (source) => {
   if (source.endsWith('.mp4') || source.endsWith('.m4v')) {
@@ -50,6 +80,7 @@ const videoItems = videoSources.map((video, index) => ({
 
 function ProjectList() {
   const [activeVideoIndex, setActiveVideoIndex] = useState(0);
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [windowAudioVideoIndex, setWindowAudioVideoIndex] = useState(null);
   const [motionWindow, setMotionWindow] = useState(null);
   const [coverflowHoverZones, setCoverflowHoverZones] = useState({});
@@ -331,6 +362,12 @@ function ProjectList() {
       if (activeWindow === 'video') {
         event.preventDefault();
         openPreview(videoItems, activeVideoIndex, 'video');
+        return;
+      }
+
+      if (activeWindow === 'image') {
+        event.preventDefault();
+        openPreview(imageItems, activeImageIndex, 'image');
       }
     };
 
@@ -338,7 +375,7 @@ function ProjectList() {
     return () => {
       window.removeEventListener('keydown', handleGlobalSpace, { capture: true });
     };
-  }, [activeVideoIndex, activeWindow, previewItem]);
+  }, [activeImageIndex, activeVideoIndex, activeWindow, previewItem]);
 
   useEffect(() => {
     const preloadTargets = videoItems
@@ -722,6 +759,9 @@ function ProjectList() {
       ) : (
         <section className="home-layout" aria-label="home page">
           {renderFinderWindow(videoItems, activeVideoIndex, setActiveVideoIndex, 'video material', 'video')}
+          {imageItems.length > 0
+            ? renderFinderWindow(imageItems, activeImageIndex, setActiveImageIndex, 'photo material', 'image')
+            : null}
 
           <div className="work-groups">
             <div className="work-group work-group--counter">
