@@ -28,8 +28,7 @@
 }
 
 .page-mark__name {
-  display: inline-flex;
-  align-items: center;
+  display: inline-block;
   font-family: var(--font-display);
   font-style: normal;
   font-size: calc(0.9rem * var(--text-scale));
@@ -37,12 +36,13 @@
   letter-spacing: 0.02rem;
   text-transform: none;
   opacity: 0.65;
+  padding-left: 0.14em;
+  margin-left: -0.14em;
   overflow: visible;
 }
 
 .page-mark__button {
-  display: inline-flex;
-  align-items: center;
+  display: inline-block;
   padding: 0.22em 0 0.28em;
   border: 0;
   background: transparent;
