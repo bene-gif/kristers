@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import './ViewCounter.css';
 
 const VISITOR_FLAG = 'kristersdzenis-portfolio:visit-counted';
-const COUNTER_ENDPOINT = 'https://visitor.6developer.com/visit';
 
 function ViewCounter() {
   const [count, setCount] = useState(null);
@@ -10,6 +9,29 @@ function ViewCounter() {
 
   useEffect(() => {
     let isMounted = true;
+
+    const updateCount = async () => {
+      const response = await fetch('/api/visit-count', {
+        cache: 'no-store',
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to load visit count.');
+      }
+
+      if (typeof data.totalCount !== 'number') {
+        throw new Error('Counter value missing from response');
+      }
+
+      if (!isMounted) {
+        return;
+      }
+
+      setCount(data.totalCount);
+      setStatus('ready');
+    };
 
     const loadCount = async () => {
       const shouldIncrement = !window.localStorage.getItem(VISITOR_FLAG);
@@ -19,34 +41,20 @@ function ViewCounter() {
       const pageTitle = document.title;
       const referrer = document.referrer;
 
-      fetch('/api/visit-log', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          domain,
-          timezone,
-          pagePath,
-          pageTitle,
-          referrer,
-          visitKind: shouldIncrement ? 'first-browser-visit' : 'repeat-browser-visit',
-        }),
-        keepalive: true,
-      }).catch(() => {});
-
       try {
-        const response = shouldIncrement
-          ? await fetch(COUNTER_ENDPOINT, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                domain,
-                timezone,
-                page_path: pagePath,
-                page_title: pageTitle,
-                referrer,
-              }),
-            })
-          : await fetch(`${COUNTER_ENDPOINT}?domain=${encodeURIComponent(domain)}`);
+        const response = await fetch('/api/visit-log', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            domain,
+            timezone,
+            pagePath,
+            pageTitle,
+            referrer,
+            visitKind: shouldIncrement ? 'first-browser-visit' : 'repeat-browser-visit',
+          }),
+          keepalive: true,
+        });
 
         if (!response.ok) {
           throw new Error(`Counter request failed with ${response.status}`);
@@ -57,19 +65,24 @@ function ViewCounter() {
           return;
         }
 
+        if (shouldIncrement) {
+          window.localStorage.setItem(VISITOR_FLAG, 'true');
+        }
+
         if (typeof data.totalCount === 'number') {
           setCount(data.totalCount);
           setStatus('ready');
-          if (shouldIncrement) {
-            window.localStorage.setItem(VISITOR_FLAG, 'true');
-          }
           return;
         }
 
-        throw new Error('Counter value missing from response');
+        await updateCount();
       } catch {
-        if (isMounted) {
-          setStatus('error');
+        try {
+          await updateCount();
+        } catch {
+          if (isMounted) {
+            setStatus('error');
+          }
         }
       }
     };

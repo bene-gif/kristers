@@ -25,6 +25,11 @@ const videoPreviewModules = import.meta.glob('../assets/media/videos-preview/*.{
   import: 'default',
 });
 
+const videoPosterModules = import.meta.glob('../assets/media/videos-posters/*.{png,jpg,jpeg,webp,avif}', {
+  eager: true,
+  import: 'default',
+});
+
 const videoAccents = ['gallery-card--mist', 'gallery-card--shadow', 'gallery-card--forest', 'gallery-card--ember', 'gallery-card--warm'];
 const imageAccents = ['gallery-card--warm', 'gallery-card--mist', 'gallery-card--forest', 'gallery-card--shadow', 'gallery-card--ember'];
 
@@ -42,6 +47,10 @@ const imagePreviewMap = new Map(
 
 const videoPreviewMap = new Map(
   Object.entries(videoPreviewModules).map(([path, source]) => [getMediaStem(path), source]),
+);
+
+const videoPosterMap = new Map(
+  Object.entries(videoPosterModules).map(([path, source]) => [getMediaStem(path), source]),
 );
 
 const getVideoMimeType = (source) => {
@@ -82,6 +91,7 @@ const mediaItems = sourceMediaPaths
 
     const video = videoModules[`../assets/media/videos-web/${stem}.mp4`];
     const previewVideo = videoPreviewMap.get(stem) ?? video;
+    const posterImage = videoPosterMap.get(stem) ?? null;
 
     return {
       title: formatMediaTitle('video', index),
@@ -90,6 +100,7 @@ const mediaItems = sourceMediaPaths
       accent: videoAccents[index % videoAccents.length],
       video,
       previewVideo,
+      posterImage,
       mimeType: getVideoMimeType(video ?? ''),
       sourcePath: path,
     };
@@ -201,6 +212,33 @@ function ProjectList() {
       setCopyState('failed');
     }
   };
+
+  const renderContactDetails = () => (
+    <div className="contact-blank__details">
+      <button
+        className="contact-blank__email mono"
+        type="button"
+        onClick={handleEmailClick}
+      >
+        kristers.dzenis@icloud.com
+      </button>
+      {showCopyPrompt ? (
+        <div className="contact-blank__prompt mono" role="status" aria-live="polite">
+          <button
+            className="contact-blank__copy-button mono"
+            type="button"
+            onClick={handleCopyEmail}
+          >
+            {copyState === 'copied'
+              ? 'address copied'
+              : copyState === 'failed'
+                ? 'copy failed'
+                : 'copy address'}
+          </button>
+        </div>
+      ) : null}
+    </div>
+  );
 
   const handleCoverflowTouchStart = (event, windowId) => {
     const touch = event.touches?.[0];
@@ -387,25 +425,6 @@ function ProjectList() {
   }, [activeMediaIndex, activeWindow, previewItem]);
 
   useEffect(() => {
-    const preloadTargets = mediaItems
-      .map((item) => item.previewVideo)
-      .filter(Boolean);
-
-    const links = preloadTargets.map((href) => {
-      const link = document.createElement('link');
-      link.rel = 'preload';
-      link.as = 'video';
-      link.href = href;
-      document.head.appendChild(link);
-      return link;
-    });
-
-    return () => {
-      links.forEach((link) => link.remove());
-    };
-  }, []);
-
-  useEffect(() => {
     if (previewItem) {
       return undefined;
     }
@@ -413,6 +432,7 @@ function ProjectList() {
     const frameId = window.requestAnimationFrame(() => {
       const videoWindow = windowRefs.current.media;
       const visibleVideos = videoWindow?.querySelectorAll?.('.gallery-card video');
+      const isMobile = isMobileViewport();
 
       visibleVideos?.forEach((video) => {
         if (!(video instanceof HTMLVideoElement)) {
@@ -421,12 +441,13 @@ function ProjectList() {
         const itemIndex = Number(video.dataset.index);
         const isVisibleCard = Number.isFinite(itemIndex)
           && Math.abs(getOffset(itemIndex, activeMediaIndex, mediaItems)) <= 1;
+        const shouldAutoPlay = isVisibleCard && (!isMobile || itemIndex === activeMediaIndex);
         const hasWindowAudio = itemIndex === windowAudioVideoIndex;
 
         video.muted = !hasWindowAudio;
         video.volume = hasWindowAudio ? 1 : 0;
 
-        if (isVisibleCard) {
+        if (shouldAutoPlay) {
           video.play().catch(() => {});
           return;
         }
@@ -560,6 +581,9 @@ function ProjectList() {
           <div className="coverflow-strip">
             {visibleItems.map(({ item, index, offset }) => {
               const isVideoCard = Boolean(item.previewVideo);
+              const isMobile = isMobileViewport();
+              const showLiveVideoCard = isVideoCard && (!isMobile || index === activeItem);
+              const previewStill = item.posterImage ?? item.previewImage;
 
               return (
                 <article
@@ -582,14 +606,14 @@ function ProjectList() {
                   }}
                 >
                   <div className="gallery-card__image">
-                    {isVideoCard ? (
+                    {showLiveVideoCard ? (
                       <video
                         data-index={index}
                         autoPlay
                         muted={windowAudioVideoIndex !== index}
                         loop
                         playsInline
-                        preload="auto"
+                        preload={index === activeItem ? 'metadata' : 'none'}
                         onLoadedData={(event) => {
                           event.currentTarget.play().catch(() => {});
                         }}
@@ -603,10 +627,10 @@ function ProjectList() {
                         />
                       </video>
                     ) : null}
-                    {!isVideoCard && item.previewImage ? <img src={item.previewImage} alt={item.title} /> : null}
+                    {!showLiveVideoCard && previewStill ? <img src={previewStill} alt={item.title} /> : null}
                   </div>
                   <div className="gallery-card__reflection" aria-hidden="true">
-                    {!isVideoCard && item.previewImage ? <img src={item.previewImage} alt="" /> : null}
+                    {!showLiveVideoCard && previewStill ? <img src={previewStill} alt="" /> : null}
                   </div>
                 </article>
               );
@@ -713,44 +737,9 @@ function ProjectList() {
         >
           about me
         </button>
-        <button
-          className="page-mark__name page-mark__button mono"
-          data-cursor-static
-          type="button"
-          onClick={() => setActivePage('contact')}
-        >
-          contact
-        </button>
       </header>
 
-      {activePage === 'contact' ? (
-        <section className="contact-blank" aria-label="contact page">
-          <div className="contact-blank__panel">
-            <button
-              className="contact-blank__email mono"
-              type="button"
-              onClick={handleEmailClick}
-            >
-              kristers.dzenis@icloud.com
-            </button>
-            {showCopyPrompt ? (
-              <div className="contact-blank__prompt mono" role="status" aria-live="polite">
-                <button
-                  className="contact-blank__copy-button mono"
-                  type="button"
-                  onClick={handleCopyEmail}
-                >
-                  {copyState === 'copied'
-                    ? 'address copied'
-                    : copyState === 'failed'
-                      ? 'copy failed'
-                      : 'copy address'}
-                </button>
-              </div>
-            ) : null}
-          </div>
-        </section>
-      ) : activePage === 'about' ? (
+      {activePage === 'about' ? (
         <section className="contact-blank" aria-label="about page">
           <div className="contact-blank__panel">
             <img
@@ -763,8 +752,9 @@ function ProjectList() {
               <br />
               Currently studying at the Art Academy of Latvia.
               <br />
-              Working with moving image and sound
+              Working with moving image and sound.
             </p>
+            {renderContactDetails()}
           </div>
         </section>
       ) : (

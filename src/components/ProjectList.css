@@ -8,7 +8,7 @@
   position: relative;
   z-index: 10001;
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: 1fr auto;
   align-items: center;
   padding-top: 0.25rem;
   margin-bottom: 2rem;
@@ -17,10 +17,6 @@
 
 .page-mark__button:first-child {
   justify-self: start;
-}
-
-.page-mark__button:nth-child(2) {
-  justify-self: center;
 }
 
 .page-mark__button:last-child {
@@ -83,6 +79,14 @@
   flex-direction: column;
   align-items: center;
   gap: 1rem;
+}
+
+.contact-blank__details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.85rem;
+  margin-top: 0.4rem;
 }
 
 .contact-blank__email {
@@ -727,10 +731,8 @@
 
   .page-mark {
     grid-template-columns: 1fr 1fr;
-    grid-template-areas:
-      'name name'
-      'about contact';
-    row-gap: 0.4rem;
+    grid-template-areas: 'name about';
+    row-gap: 0;
     margin-bottom: 1.15rem;
     padding-top: 0.1rem;
   }
@@ -740,20 +742,27 @@
     justify-self: start;
   }
 
-  .page-mark__button:nth-child(2) {
-    grid-area: about;
-    justify-self: start;
-  }
-
   .page-mark__button:last-child {
-    grid-area: contact;
+    grid-area: about;
     justify-self: end;
   }
 
   .page-mark__name {
-    font-size: calc(0.64rem * var(--text-scale));
+    font-size: calc(0.96rem * var(--text-scale));
     letter-spacing: 0.13rem;
     white-space: nowrap;
+  }
+
+  .contact-blank__email {
+    font-size: calc(clamp(1.2rem, 3vw, 1.725rem) * var(--text-scale) * var(--ui-text-scale));
+  }
+
+  .contact-blank__copy-button {
+    font-size: calc(1.08rem * var(--text-scale) * var(--ui-text-scale));
+  }
+
+  .contact-blank__about-text {
+    font-size: calc(clamp(1.35rem, 2.025vw, 1.65rem) * var(--text-scale) * var(--ui-text-scale));
   }
 
   .finder-gallery {
@@ -772,6 +781,10 @@
 
   .finder-window__search {
     width: 3.9rem;
+  }
+
+  .finder-window__title {
+    font-size: calc(1.125rem * var(--text-scale) * var(--ui-text-scale));
   }
 
   .finder-window__coverflow {
@@ -811,7 +824,7 @@
 
   .finder-window__status {
     padding: 0.3rem 0.7rem 0.4rem;
-    font-size: calc(0.56rem * var(--text-scale) * var(--ui-text-scale));
+    font-size: calc(0.84rem * var(--text-scale) * var(--ui-text-scale));
   }
 
   .media-preview {
@@ -836,12 +849,20 @@
     max-height: min(68vh, calc(100vh - 10rem));
   }
 
+  .media-preview__title {
+    font-size: calc(1.08rem * var(--text-scale) * var(--ui-text-scale));
+  }
+
+  .media-preview__description {
+    font-size: calc(0.93rem * var(--text-scale) * var(--ui-text-scale));
+  }
+
   .work-group h2 {
-    font-size: calc(clamp(1.45rem, 6vw, 1.9rem) * var(--text-scale) * var(--ui-text-scale));
+    font-size: calc(clamp(2.175rem, 9vw, 2.85rem) * var(--text-scale) * var(--ui-text-scale));
   }
 
   .work-group a {
-    font-size: calc(clamp(1.35rem, 5vw, 1.8rem) * var(--text-scale) * var(--ui-text-scale));
+    font-size: calc(clamp(2.025rem, 7.5vw, 2.7rem) * var(--text-scale) * var(--ui-text-scale));
   }
 
   .work-groups {

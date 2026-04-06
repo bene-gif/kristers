@@ -1,9 +1,7 @@
 import {
-  buildVisitRecord,
   countTrackedVisits,
   hasVisitInsightsStorage,
   loadVisitRecords,
-  storeVisitRecord,
 } from '../lib/visit-insights.js';
 
 const json = (payload, status = 200) => new Response(JSON.stringify(payload), {
@@ -16,7 +14,7 @@ const json = (payload, status = 200) => new Response(JSON.stringify(payload), {
 
 export const runtime = 'nodejs';
 
-export async function POST(request) {
+export async function GET() {
   if (!hasVisitInsightsStorage()) {
     return json({
       configured: false,
@@ -24,26 +22,14 @@ export async function POST(request) {
     }, 503);
   }
 
-  let payload;
-
   try {
-    payload = await request.json();
-  } catch {
-    return json({ error: 'Invalid JSON body.' }, 400);
-  }
-
-  try {
-    const visit = await buildVisitRecord(request, payload);
-    await storeVisitRecord(visit);
     const visits = await loadVisitRecords();
 
     return json({
       configured: true,
-      logged: true,
       totalCount: countTrackedVisits(visits),
-    }, 201);
-  } catch (error) {
-    console.error('visit-log failed', error);
-    return json({ error: 'Failed to log visit metadata.' }, 500);
+    });
+  } catch {
+    return json({ error: 'Failed to load visit count.' }, 500);
   }
 }

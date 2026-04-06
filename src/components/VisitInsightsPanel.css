@@ -142,4 +142,30 @@
   .visit-insights-panel__grid {
     grid-template-columns: 1fr;
   }
+
+  .visit-insights-panel__eyebrow,
+  .visit-insights-panel__section-title,
+  .visit-insights-panel__recent-network,
+  .visit-insights-panel__message,
+  .visit-insights-panel__close,
+  .visit-insights-panel__total-label {
+    font-size: calc(1.08rem * var(--text-scale) * var(--ui-text-scale));
+  }
+
+  .visit-insights-panel__title {
+    font-size: calc(clamp(2.4rem, 4.5vw, 3.6rem) * var(--text-scale) * var(--ui-text-scale));
+  }
+
+  .visit-insights-panel__total-value {
+    font-size: calc(3rem * var(--text-scale) * var(--ui-text-scale));
+  }
+
+  .visit-insights-panel__list-item,
+  .visit-insights-panel__recent-item {
+    font-size: calc(1.425rem * var(--text-scale) * var(--ui-text-scale));
+  }
+
+  .visit-insights-panel__recent-item time {
+    font-size: calc(1.02rem * var(--text-scale) * var(--ui-text-scale));
+  }
 }
