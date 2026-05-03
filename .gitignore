@@ -25,3 +25,9 @@ dist-ssr
 .vercel
 .autopush/
 .env*.local
+
+# Local source uploads; optimized publishable copies live in videos-web/videos-preview.
+src/assets/media/videos/KOPSTALFINAL.mp4
+src/assets/media/videos/SKANASKOMP-KRISTERS.mp4
+src/assets/media/videos/blendertopologyrokasdarbs.mp4
+src/assets/media/videos/hennesymelodyvid.mp4

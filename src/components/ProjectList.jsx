@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import ViewCounter from './ViewCounter';
 
-const sourceMediaPaths = Object.keys(
+const sourceMediaFilePaths = Object.keys(
   import.meta.glob('../assets/media/videos/*.{png,jpg,jpeg,webp,avif,mov,mp4,m4v,webm}'),
 );
 
@@ -41,17 +41,24 @@ const compareMediaPaths = (leftPath, rightPath) => getMediaFileName(leftPath)
 const isImageFile = (path) => /\.(png|jpe?g|webp|avif)$/i.test(path);
 const isVideoFile = (path) => /\.(mov|mp4|m4v|webm)$/i.test(path);
 
+const makeStemMap = (modules) => new Map(
+  Object.entries(modules).map(([path, source]) => [getMediaStem(path), source]),
+);
+
+const sourceMediaPaths = Array.from(
+  new Map(
+    [...sourceMediaFilePaths, ...Object.keys(videoModules)].map((path) => [getMediaStem(path), path]),
+  ).values(),
+);
+
 const imagePreviewMap = new Map(
   Object.entries(imagePreviewModules).map(([path, source]) => [getMediaStem(path), source]),
 );
 
-const videoPreviewMap = new Map(
-  Object.entries(videoPreviewModules).map(([path, source]) => [getMediaStem(path), source]),
-);
+const videoMap = makeStemMap(videoModules);
+const videoPreviewMap = makeStemMap(videoPreviewModules);
 
-const videoPosterMap = new Map(
-  Object.entries(videoPosterModules).map(([path, source]) => [getMediaStem(path), source]),
-);
+const videoPosterMap = makeStemMap(videoPosterModules);
 
 const getVideoMimeType = (source) => {
   if (source.endsWith('.mp4') || source.endsWith('.m4v')) {
@@ -89,7 +96,7 @@ const mediaItems = sourceMediaPaths
       };
     }
 
-    const video = videoModules[`../assets/media/videos-web/${stem}.mp4`];
+    const video = videoMap.get(stem);
     const previewVideo = videoPreviewMap.get(stem) ?? video;
     const posterImage = videoPosterMap.get(stem) ?? null;
 
