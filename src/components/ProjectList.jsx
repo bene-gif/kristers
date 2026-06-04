@@ -32,6 +32,7 @@ const videoMediaFilePaths = Object.keys(videoModules);
 const videoAccents = ['gallery-card--mist', 'gallery-card--shadow', 'gallery-card--forest', 'gallery-card--ember', 'gallery-card--warm'];
 const imageAccents = ['gallery-card--warm', 'gallery-card--mist', 'gallery-card--forest', 'gallery-card--shadow', 'gallery-card--ember'];
 const videoDescriptions = {
+  2: 'A video created for a course exhibition at Jaunmoku Pils during a plein air, inspired by the castle\'s haunted stories.',
   'SKANASKOMP-KRISTERS': 'A sound composition video of a natural occurrence.',
 };
 
