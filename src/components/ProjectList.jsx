@@ -31,6 +31,9 @@ const videoMediaFilePaths = Object.keys(videoModules);
 
 const videoAccents = ['gallery-card--mist', 'gallery-card--shadow', 'gallery-card--forest', 'gallery-card--ember', 'gallery-card--warm'];
 const imageAccents = ['gallery-card--warm', 'gallery-card--mist', 'gallery-card--forest', 'gallery-card--shadow', 'gallery-card--ember'];
+const videoDescriptions = {
+  'SKANASKOMP-KRISTERS': 'A sound composition video of a natural occurrence.',
+};
 
 const getMediaFileName = (path) => path.split('/').pop() ?? path;
 const getMediaStem = (path) => getMediaFileName(path).replace(/\.[^.]+$/, '');
@@ -102,7 +105,7 @@ const mediaItems = sourceMediaPaths
     return {
       title: formatMediaTitle('video', index),
       meta: 'video material',
-      description: 'Video preview with sound enabled in the pop-up viewer.',
+      description: videoDescriptions[stem] ?? 'Video preview with sound enabled in the pop-up viewer.',
       accent: videoAccents[index % videoAccents.length],
       video,
       previewVideo,
