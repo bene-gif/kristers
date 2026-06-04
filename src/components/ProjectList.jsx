@@ -1,10 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import ViewCounter from './ViewCounter';
 
-const sourceMediaFilePaths = Object.keys(
-  import.meta.glob('../assets/media/videos/*.{png,jpg,jpeg,webp,avif,mov,mp4,m4v,webm}'),
-);
-
 const imageModules = import.meta.glob('../assets/media/images/*.{png,jpg,jpeg,webp,avif}', {
   eager: true,
   import: 'default',
@@ -30,6 +26,9 @@ const videoPosterModules = import.meta.glob('../assets/media/videos-posters/*.{p
   import: 'default',
 });
 
+const imageMediaFilePaths = Object.keys(imageModules);
+const videoMediaFilePaths = Object.keys(videoModules);
+
 const videoAccents = ['gallery-card--mist', 'gallery-card--shadow', 'gallery-card--forest', 'gallery-card--ember', 'gallery-card--warm'];
 const imageAccents = ['gallery-card--warm', 'gallery-card--mist', 'gallery-card--forest', 'gallery-card--shadow', 'gallery-card--ember'];
 
@@ -47,7 +46,7 @@ const makeStemMap = (modules) => new Map(
 
 const sourceMediaPaths = Array.from(
   new Map(
-    [...sourceMediaFilePaths, ...Object.keys(videoModules)].map((path) => [getMediaStem(path), path]),
+    [...imageMediaFilePaths, ...videoMediaFilePaths].map((path) => [getMediaStem(path), path]),
   ).values(),
 );
 
